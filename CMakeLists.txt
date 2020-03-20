@@ -1,5 +1,30 @@
 # Light Cells
 
+########################################################################
+# CMake policies
+########################################################################
+
+cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
+
+# OLD: project() command manages VERSION variables.
+if(POLICY CMP0048)
+  cmake_policy(SET CMP0048 NEW)
+endif(POLICY CMP0048)
+
+# OLD: target_sources() command converts relative paths to absolute.
+if(POLICY CMP0076)
+  cmake_policy(SET CMP0076 NEW)
+endif(POLICY CMP0076)
+
+# OLD: Targets need to be created in the same directory to be used.
+if(POLICY CMP0079)
+  cmake_policy(SET CMP0079 NEW)
+endif(POLICY CMP0079)
+
+########################################################################
+# CMake Project
+########################################################################
+
 project(LightCells
   VERSION 0.0.0.1
   DESCRIPTION "Batteries for Light"
@@ -7,7 +32,13 @@ project(LightCells
   LANGUAGES C
 )
 
-cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
+########################################################################
+# CMake setup
+########################################################################
+
+if(WIN32)
+  set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+endif(WIN32)
 
 set(CELLS_DEV
   CACHE
@@ -79,6 +110,48 @@ write_basic_package_version_file(
   VERSION 0.0.1
   COMPATIBILITY SameMinorVersion
 )
+
+########################################################################
+# deps
+########################################################################
+
+# Find Light if it's not already a target.
+if(NOT(TARGET Light))
+  find_package(Light)
+  message("Found Light")
+endif() # NOT(TARGET Light)
+
+# Find SDL2 if it's not already a target.
+if(NOT(TARGET SDL2))
+  find_package(SDL2 REQUIRED)
+  message("Found SDL2")
+endif() # NOT(TARGET SDL2)
+
+########################################################################
+# Targets
+########################################################################
+
+# cell_sdl.h
+add_library(CellSDL SHARED)
+target_sources(CellSDL PUBLIC cell_sdl.c)
+target_sources(CellSDL PUBLIC cell_sdl.h)
+target_include_directories(CellSDL PUBLIC ${CELLS_DIR})
+
+set_property(TARGET CellSDL PROPERTY C_STANDARD 90)
+set_property(TARGET CellSDL PROPERTY C_STANDARD_REQUIRED ON)
+
+target_link_libraries(CellSDL Light SDL2)
+
+########################################################################
+# Installation
+########################################################################
+
+# Export files (shamelessly cribbed from SDL2)
+if (WINDOWS)
+  set(PKG_PREFIX "cmake")
+else ()
+  set(PKG_PREFIX "lib/cmake/SDL2")
+endif ()
 
 install(
   FILES

@@ -7,6 +7,11 @@ through this collection.
 A Cell is a small bundle of related functionality.  For example,
 [`cell_sdl`](cell_sdl.h) contains SDL2 helpers for Light.
 
+So far, all Cells are ANSI C89 compatible.  In the future, some Cells
+might offer support for libraries which require C99.  All Cells will
+always work with Windows (MSVC), so no unsupported C standard will ever
+be required.  Cells which require C99 will clearly say so.
+
 ## Using Light Cells in your project
 
 Like Light, Cells can be used in your project by direct inclusion, as a
@@ -31,5 +36,4 @@ have support for use as CMake subtrees / use as Git submodules.
 
 Dependencies:
 - [Light](https://github.com/phoenix-engine/light): A light graphics toolkit
-- [zf_log](https://github.com/phoenix-engine/zf_log): Fast logging
 - [SDL2](https://github.com/phoenix-engine/SDL): Native UI and graphics

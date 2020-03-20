@@ -1,0 +1,9 @@
+@PACKAGE_INIT@
+
+# set(CELLS_DIR "@PACKAGE_INSTALL_FULL_INCLUDEDIR@")
+set(CELLS_DIR "@CELLS_DIR@")
+set(CELLS_INCLUDE_DIR "@CELLS_INCLUDE_DIR@")
+# set(CELLS_DATA_DIR    "/usr/local/" )
+
+#...logic to determine installedPrefix from the own location...
+# set(CELLS_CONFIG_DIR  "${installedPrefix}/" )
